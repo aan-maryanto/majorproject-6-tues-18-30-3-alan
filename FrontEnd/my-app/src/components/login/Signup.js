@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import './signup.css'
 class Signup extends Component {
@@ -17,7 +16,7 @@ class Signup extends Component {
             services: "",
             workingDays: "",
             workingHours: "",
-            redirect: null
+            redirect_url: null
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -42,17 +41,14 @@ class Signup extends Component {
         }
 
         console.log(newAccount);
-
         axios.post('http://localhost:8080/api/account', newAccount)
         .then(function(result) {
             console.log(result)
             if(result.status >= 400 || result.status < 200) {
                 throw new Error("proses gagal !");
             }else{
-                this.setState({
-                    redirect: '/login'
-                })
-                // this.setState({redirect: '/login'})
+                alert("Proses signup berhasil")
+                window.location.href = '/login'
             }
         })
         .catch(function(error) {
@@ -61,9 +57,6 @@ class Signup extends Component {
         })
     }
     render() {
-        if(this.state.redirect) {
-            return <Redirect to={this.state.redirect} />
-        }
         return (
             <div className="Signup">
                 <div class="container">

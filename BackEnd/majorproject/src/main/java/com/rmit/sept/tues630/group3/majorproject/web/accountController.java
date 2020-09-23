@@ -1,9 +1,10 @@
 package com.rmit.sept.tues630.group3.majorproject.web;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.rmit.sept.tues630.group3.majorproject.model.Account;
 import com.rmit.sept.tues630.group3.majorproject.services.CustomerService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +17,8 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util.println;
 
 @RestController
 @RequestMapping("/api/account")
@@ -39,15 +42,28 @@ public class accountController {
     }
 
     @PostMapping(value = "/login", produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> loginAccount(@Valid @RequestBody Account account, BindingResult result) {
-        if(result.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            for(FieldError error : result.getFieldErrors()) {
-                return new ResponseEntity<List<FieldError>>(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Map<String,String>> loginAccount(@RequestBody String request) {
+        JSONObject param = null;
+        Map<String, String> respon = new HashMap<String, String>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            param = new JSONObject(request);
+            String username = param.get("username").toString();
+            String password = param.get("password").toString();
+            Account account1 = customerService.findByUsername(username);
+            println("Account :"+account1);
+            if(account1 != null) {
+                respon.put("status", "success");
+                respon.put("message", "success");
+                status = HttpStatus.OK;
+            }else{
+                respon.put("status", "fail");
+                respon.put("message","fail");
+                status = HttpStatus.BAD_REQUEST;
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        Account account1 = customerService.findByUsername(account.getUsername());
-        return new ResponseEntity<Account>(account1, HttpStatus.OK);
+        return new ResponseEntity<Map<String, String>>(respon, status);
     }
 }
