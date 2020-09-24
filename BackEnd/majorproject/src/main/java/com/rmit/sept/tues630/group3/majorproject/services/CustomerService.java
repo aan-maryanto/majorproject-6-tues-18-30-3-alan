@@ -18,7 +18,7 @@ public class CustomerService {
         return accountRepository.save(account);
     }
 
-    public Account findByUsername(String username) {
-        return accountRepository.findAccountByUsername(username);
+    public Account findByUsernameAndPassword(String username, String password) {
+        return accountRepository.findAccountByUsernameAndPasswordTrue(username, password);
     }
 }

@@ -35,9 +35,14 @@ class Login extends Component {
             if(result.status>=400 || result.status<200){
                 throw new Error('login fail')
             }else{
-                alert(data['message'])
-                window.localStorage.setItem('is_login', 'Y')
-                window.location.href = '/'
+                if(data['status']=='success') {
+                    alert(data['message'])
+                    window.localStorage.setItem('is_login', 'Y')
+                    window.location.href = '/'
+                }else{
+                    alert(data['message'])
+                }
+               
             }
         })
         .catch(function(error){

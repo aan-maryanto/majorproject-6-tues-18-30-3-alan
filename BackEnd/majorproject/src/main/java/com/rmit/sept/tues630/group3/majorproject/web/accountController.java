@@ -50,7 +50,7 @@ public class accountController {
             param = new JSONObject(request);
             String username = param.get("username").toString();
             String password = param.get("password").toString();
-            Account account1 = customerService.findByUsername(username);
+            Account account1 = customerService.findByUsernameAndPassword(username, password);
             println("Account :"+account1);
             if(account1 != null) {
                 respon.put("status", "success");
