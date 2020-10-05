@@ -55,12 +55,19 @@ public class accountController {
             System.out.println("Account :"+account1);
 //            Account account1 = customerService.findByUsername(username);
             if(account1 != null) {
-                respon.put("status", "success");
-                respon.put("message", "success");
-                status = HttpStatus.OK;
+                if(password.equals(account1.getPassword())) {
+                    respon.put("status", "success");
+                    respon.put("message", "success");
+                    status = HttpStatus.OK;
+                }else{
+                    respon.put("status", "fail");
+                    respon.put("message", "Password Salah");
+                    status = HttpStatus.BAD_REQUEST;
+                }
+
             }else{
                 respon.put("status", "fail");
-                respon.put("message","fail");
+                respon.put("message","Account tidak ditemukan");
                 status = HttpStatus.BAD_REQUEST;
             }
         } catch (JSONException e) {
