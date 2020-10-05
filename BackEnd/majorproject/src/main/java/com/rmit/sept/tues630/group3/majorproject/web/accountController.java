@@ -50,8 +50,10 @@ public class accountController {
             param = new JSONObject(request);
             String username = param.get("username").toString();
             String password = param.get("password").toString();
-            Account account1 = customerService.findByUsernameAndPassword(username, password);
-            println("Account :"+account1);
+            System.out.println("username : "+username+" password : "+password );
+            Account account1 = customerService.findByUsername(username);
+            System.out.println("Account :"+account1);
+//            Account account1 = customerService.findByUsername(username);
             if(account1 != null) {
                 respon.put("status", "success");
                 respon.put("message", "success");
